@@ -71,13 +71,20 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [UserController::class, 'store'])->name('store');
         Route::get('/{user}', [UserController::class, 'show'])->name('show');
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
-        Route::patch('/{user}', [UserController::class, 'update'])->name('update');
+        Route::put('/{user}', [UserController::class, 'update'])->name('update');
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
         Route::get('/pending/list', [UserController::class, 'pending'])->name('pending');
+        Route::get('/pending/count', [UserController::class, 'pendingCount'])->name('pending.count');
         Route::patch('/{user}/approve', [UserController::class, 'approve'])->name('approve');
         Route::patch('/{user}/reject', [UserController::class, 'reject'])->name('reject');
         Route::get('/assign-roles/form', [UserController::class, 'assignRolesForm'])->name('assign-roles');
         Route::post('/{user}/assign-roles', [UserController::class, 'assignRoles'])->name('assign-roles.store');
+        // Additional user management routes
+        Route::patch('/{user}/basic-info', [UserController::class, 'updateBasicInfo'])->name('update-basic-info');
+        Route::patch('/{user}/account-settings', [UserController::class, 'updateAccountSettings'])->name('update-account-settings');
+        Route::patch('/{user}/roles', [UserController::class, 'updateRoles'])->name('update-roles');
+        Route::patch('/{user}/admin-notes', [UserController::class, 'updateAdminNotes'])->name('update-admin-notes');
+        Route::post('/send-password-reset', [UserController::class, 'sendPasswordResetLink'])->name('send-password-reset');
     });
 
     // Role Management Routes
@@ -101,6 +108,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/{permission}/edit', [PermissionController::class, 'edit'])->name('edit');
         Route::patch('/{permission}', [PermissionController::class, 'update'])->name('update');
         Route::delete('/{permission}', [PermissionController::class, 'destroy'])->name('destroy');
+        Route::get('/category/{category}', [PermissionController::class, 'getByCategory'])->name('by-category');
+        Route::post('/bulk-assign', [PermissionController::class, 'bulkAssignToRoles'])->name('bulk-assign');
     });
 
     // Logout
