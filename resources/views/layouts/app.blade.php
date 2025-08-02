@@ -22,8 +22,8 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Bootstrap RTL (for Arabic) -->
     @if (app()->getLocale() == 'ar')
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.rtl.min.css"
-            integrity="sha384-Xbg45MqvDIk1e563NLpGEulpX6AvL404DP+/iCgW9eFa2BqztiwTexswJo2jLMue" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.rtl.min.css"
+        integrity="sha384-Xbg45MqvDIk1e563NLpGEulpX6AvL404DP+/iCgW9eFa2BqztiwTexswJo2jLMue" crossorigin="anonymous">
     @endif
 
     <!-- Scripts -->
@@ -67,19 +67,20 @@
     @include('includes.sidebar')
 
     <!-- Main Content -->
-    <main style="min-height: 100vh;">
-        <div class="container-fluid px-4">
-            <!-- Mobile Sidebar Toggle -->
-            <button class="btn btn-primary sidebar-toggle d-md-none mb-3" onclick="toggleSidebar()">
-                <i class="fas fa-bars"></i>
-            </button>
-            <!-- Top Navigation -->
-            <header
-                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <main style="min-height: 100vh; position: relative">
+        <!-- Mobile Sidebar Toggle -->
+        <button class="btn btn-primary sidebar-toggle d-md-none mb-3" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <!-- Top Navigation -->
+        <header class="d-none d-md-block "
+            style="position: sticky; left: 0; right: 0; top:0; z-index: 1000; background-color: var(--sidebar-bg-color);">
+            <div
+                class="w-100 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center px-4 py-3">
                 <!-- Breadcrumb -->
-                <div>
+                <div class="d-none d-lg-block">
                     <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb mb-0">
+                        <ol class="breadcrumb mb-0 text-light">
                             @yield('breadcrumb')
                         </ol>
                     </nav>
@@ -88,19 +89,21 @@
                 <!-- Search & User Menu -->
                 <div class="d-flex align-items-center">
                     <!-- Search Form -->
-                    <form class="d-flex me-3" role="search">
-                        <div class="input-group">
-                            <input class="form-control" type="search" placeholder="{{ __('messages.search') }}"
-                                aria-label="Search">
-                            <button class="btn btn-outline-primary" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </form>
+                    <div class="d-none d-lg-block">
+                        <form class="d-flex me-3" role="search">
+                            <div class="input-group">
+                                <input class="form-control" type="search" placeholder="{{ __('messages.search') }}"
+                                    aria-label="Search">
+                                <button class="btn btn-outline-light" type="submit">
+                                    <i class="fas fa-search text-light"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
 
                     <!-- Language Switcher -->
                     <div class="dropdown me-3">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                        <button class="btn btn-outline-light dropdown-toggle" type="button"
                             data-bs-toggle="dropdown">
                             <i class="fas fa-globe fa-icon"></i>
                             {{ app()->getLocale() == 'ar' ? 'العربية' : 'English' }}
@@ -113,13 +116,13 @@
 
                     <!-- User Menu -->
                     <div class="dropdown">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button"
+                        <button class="btn btn-outline-light dropdown-toggle" type="button"
                             data-bs-toggle="dropdown">
                             <i class="fas fa-user fa-icon"></i>
                             {{ Auth::user()->name ?? 'User' }}
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">
+                            <li><a class="dropdown-item" href="{{ route('profile.show') }}">
                                     <i class="fas fa-user fa-icon"></i>
                                     {{ __('messages.profile') }}
                                 </a></li>
@@ -142,33 +145,28 @@
                         </ul>
                     </div>
                 </div>
-            </header>
-
-            <!-- Page Content -->
-            <div class="container-fluid">
-                @yield('content')
             </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="container-fluid my-4">
+            @yield('content')
         </div>
     </main>
 
-    @media (max-width: 767.98px) {
-    main {
-    margin-left: 0 !important;
-    }
-    }
 
     @if (app()->getLocale() == 'ar')
-        <style>
-            .toast-container {
-                left: 1rem;
-            }
-        </style>
+    <style>
+        .toast-container {
+            left: 1rem;
+        }
+    </style>
     @else
-        <style>
-            .toast-container {
-                right: 1rem;
-            }
-        </style>
+    <style>
+        .toast-container {
+            right: 1rem;
+        }
+    </style>
     @endif
 
     <!-- Toast Container -->
@@ -319,19 +317,19 @@
         // Update pending count every 30 seconds
         setInterval(updatePendingUsersCount, 30000);
     </script>
-    // Show success/error messages from session
+    <!-- Show success/error messages from session -->
     @if (session('success'))
-        <script>
-            const successMessage = "{{ session('success') }}";
-            showToast(successMessage, 'success');
-        </script>
+    <script>
+        const successMessage = "{{ session('success') }}";
+        showToast(successMessage, 'success');
+    </script>
     @endif
 
     @if (session('error'))
-        <script>
-            const errorMessage = "{{ session('error') }}";
-            showToast(errorMessage, 'danger');
-        </script>
+    <script>
+        const errorMessage = "{{ session('error') }}";
+        showToast(errorMessage, 'danger');
+    </script>
     @endif
 
     @stack('scripts')

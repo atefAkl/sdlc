@@ -61,8 +61,9 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     // Profile Management
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 
     // User Management Routes
     Route::prefix('users')->name('users.')->group(function () {
@@ -79,6 +80,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{user}/reject', [UserController::class, 'reject'])->name('reject');
         Route::get('/assign-roles/form', [UserController::class, 'assignRolesForm'])->name('assign-roles');
         Route::post('/{user}/assign-roles', [UserController::class, 'assignRoles'])->name('assign-roles.store');
+
         // Additional user management routes
         Route::patch('/{user}/basic-info', [UserController::class, 'updateBasicInfo'])->name('update-basic-info');
         Route::patch('/{user}/account-settings', [UserController::class, 'updateAccountSettings'])->name('update-account-settings');

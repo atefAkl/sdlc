@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
     /**
-     * Show the form for editing the user's profile.
+     * Display the user's profile form.
      */
-    public function edit()
+    public function show()
     {
-        return view('profile.edit', [
+        return view('profiles.show', [
             'user' => Auth::user(),
         ]);
     }
@@ -23,32 +26,38 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-        $user = Auth::user();
+        $user = User::find(Auth::id());
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'current_password' => 'nullable|required_with:password',
-            'password' => 'nullable|min:8|confirmed',
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
         ]);
 
-        // Update basic info
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
+        $user->fill($validated);
 
-        // Update password if provided
-        if ($request->password) {
-            if (!Hash::check($request->current_password, $user->password)) {
-                return back()->withErrors(['current_password' => 'كلمة المرور الحالية غير صحيحة']);
-            }
-
-            $user->update([
-                'password' => Hash::make($request->password),
-            ]);
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        return redirect()->route('profile.edit')->with('success', 'تم تحديث الملف الشخصي بنجاح');
+        $user->save();
+
+        return redirect()->route('profile.show')->with('success', __('messages.profile_updated_successfully'));
+    }
+
+    /**
+     * Update the user's password.
+     */
+    public function updatePassword(Request $request)
+    {
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
+        ]);
+
+        $request->user()->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return back()->with('success', __('messages.password_updated_successfully'));
     }
 }
