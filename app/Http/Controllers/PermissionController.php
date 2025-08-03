@@ -20,9 +20,13 @@ class PermissionController extends Controller
     /**
      * Show the form for creating a new permission.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('permissions.create');
+        $existingGroups = Permission::select('category')->distinct()
+            ->get();
+        // If a specific group is requested, pass it to the view
+        $groupe = $request->get('group', null);
+        return view('permissions.create', compact('groupe', 'existingGroups'));
     }
 
     /**
@@ -48,8 +52,10 @@ class PermissionController extends Controller
      */
     public function show(Permission $permission)
     {
+        $permissions = Permission::all();
+        // Load roles associated with the permission
         $permission->load('roles');
-        return view('permissions.show', compact('permission'));
+        return view('permissions.show', compact('permission', 'permissions'));
     }
 
     /**
@@ -57,7 +63,9 @@ class PermissionController extends Controller
      */
     public function edit(Permission $permission)
     {
-        return view('permissions.edit', compact('permission'));
+        $permissions = Permission::all();
+        $permission->load('roles');
+        return view('permissions.edit', compact('permission', 'permissions'));
     }
 
     /**

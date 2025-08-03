@@ -171,9 +171,9 @@
                 <div class="card mb-4">
                     <div class="card-header bg-light">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">
-                                <i class="fas fa-folder text-primary me-2"></i>
-                                {{ ucwords(str_replace('-', ' ', $group)) }}
+                            <h5 class="mb-0 text-primary">
+                                <i class="fas fa-folder me-2"></i>
+                                {{ __(str_replace('-', ' ', $group)) }}
                                 <span class="badge bg-primary ms-2">{{ $groupPermissions->count() }}</span>
                             </h5>
                             <div class="btn-group btn-group-sm">

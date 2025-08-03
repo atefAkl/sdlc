@@ -352,13 +352,14 @@
                                 </button>
                             @endif
 
-                            <a href="{{ route('roles.assign-permissions', ['permissions' => [$permission->id]]) }}"
+                            <a href="{{ route('roles.assign-permissions', [$permission->id]) }}"
                                 class="btn btn-outline-success">
                                 <i class="fas fa-user-shield"></i>
                                 تعيين لأدوار
                             </a>
 
-                            <a href="{{ route('permissions.create') }}" class="btn btn-outline-info">
+                            <a href="{{ route('permissions.create', ['group' => explode('-', $permission->name)[0]]) }}"
+                                class="btn btn-outline-info">
                                 <i class="fas fa-plus"></i>
                                 إضافة صلاحية جديدة
                             </a>

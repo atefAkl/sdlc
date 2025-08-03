@@ -3,9 +3,9 @@
 @section('title', 'إضافة صلاحية جديدة')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">الرئيسية</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('permissions.index') }}">إدارة الصلاحيات</a></li>
-    <li class="breadcrumb-item active">إضافة صلاحية جديدة</li>
+    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('nav.dashboard') }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('permissions.index') }}">{{ __('nav.permission-management') }}</a></li>
+    <li class="breadcrumb-item active">{{ __('vav.add-new-permission') }}</li>
 @endsection
 
 @section('content')
@@ -84,13 +84,14 @@
                                 </label>
                                 <div class="row">
                                     <div class="col-md-8">
+
                                         <select class="form-select @error('group') is-invalid @enderror" id="group"
                                             name="group">
                                             <option value="">اختر مجموعة موجودة أو أدخل جديدة</option>
                                             @foreach ($existingGroups as $group)
-                                                <option value="{{ $group }}"
-                                                    {{ old('group') == $group ? 'selected' : '' }}>
-                                                    {{ ucwords(str_replace('-', ' ', $group)) }}
+                                                <option value="{{ $group->category }}"
+                                                    {{ old('group') == $group->category || $groupe == $group->category ? 'selected' : '' }}>
+                                                    {{ ucwords($group->category) }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -184,7 +185,7 @@
             <!-- Info Card -->
             <div class="col-lg-4">
                 <div class="card">
-                    <div class="card-header bg-info text-white">
+                    <div class="card-header bg-primary text-white">
                         <h6 class="card-title mb-0">
                             <i class="fas fa-info-circle me-2"></i>
                             إرشادات تسمية الصلاحيات
@@ -220,7 +221,7 @@
                 <!-- Existing Groups -->
                 @if ($existingGroups->count() > 0)
                     <div class="card mt-3">
-                        <div class="card-header bg-light">
+                        <div class="card-header bg-secondary text-white">
                             <h6 class="card-title mb-0">
                                 <i class="fas fa-layer-group me-2"></i>
                                 المجموعات الموجودة
@@ -238,7 +239,7 @@
 
                 <!-- Quick Actions -->
                 <div class="card mt-3">
-                    <div class="card-header bg-light">
+                    <div class="card-header bg-primary text-white">
                         <h6 class="card-title mb-0">
                             <i class="fas fa-bolt me-2"></i>
                             إجراءات سريعة

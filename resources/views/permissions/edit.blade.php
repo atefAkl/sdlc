@@ -43,7 +43,7 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('permissions.update', $permission) }}">
                             @csrf
-                            @method('PUT')
+                            @method('PATCH')
 
                             <!-- Current Permission Info -->
                             <div class="alert alert-info mb-4">
@@ -223,7 +223,7 @@
                                 </button>
                             @endif
 
-                            <a href="{{ route('roles.assign-permissions', ['permissions' => [$permission->id]]) }}"
+                            <a href="{{ route('roles.assign-permissions', [$permission->id]) }}"
                                 class="btn btn-outline-success btn-sm">
                                 <i class="fas fa-user-shield"></i>
                                 تعيين لأدوار

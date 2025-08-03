@@ -106,9 +106,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [PermissionController::class, 'index'])->name('index');
         Route::get('/create', [PermissionController::class, 'create'])->name('create');
         Route::post('/', [PermissionController::class, 'store'])->name('store');
-        Route::get('/{permission}', [PermissionController::class, 'show'])->name('show');
+        Route::get('/show/{permission}', [PermissionController::class, 'show'])->name('show');
         Route::get('/{permission}/edit', [PermissionController::class, 'edit'])->name('edit');
-        Route::patch('/{permission}', [PermissionController::class, 'update'])->name('update');
+        Route::patch('/update/{permission}', [PermissionController::class, 'update'])->name('update');
         Route::delete('/{permission}', [PermissionController::class, 'destroy'])->name('destroy');
         Route::get('/category/{category}', [PermissionController::class, 'getByCategory'])->name('by-category');
         Route::post('/bulk-assign', [PermissionController::class, 'bulkAssignToRoles'])->name('bulk-assign');

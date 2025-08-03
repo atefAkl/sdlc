@@ -29,10 +29,11 @@
     /* Adjustments for the breadcrumb textcolor */
     ol.breadcrumb li.breadcrumb-item:before,
     ol.breadcrumb li.breadcrumb-item:after {
-        color: var(--text-color-light);
-        padding-inline-start: 1rem;
+        color: black;
+        padding-inline-start: 0.2rem;
         font-size: 1.5rem;
         transform: scaleY(1.3);
+
     }
 
     /* RTL Adjustments for the breadcrumb separator */
@@ -300,7 +301,7 @@
                 <img width="60" style="display: block; margin: 0 auto;"
                     src="{{ asset('assets/images/SDT White.png') }}" alt="">
             </h4>
-            <small class="text-light">{{ __('sidebar.ashboard') }}</small>
+            <small class="text-light fs-5">{{ __('sidebar.dashboard') }}</small>
         </a>
 
         <!-- Navigation Menu -->
@@ -372,202 +373,202 @@
             <!-- User Management Section -->
             @can('manage-users')
 
-            <div class="nav-item">
-                <a class="nav-link has-submenu{{ request()->is('users*') ? ' active' : '' }}"
-                    onclick="toggleSubmenu(this)">
-                    <div class="nav-content">
-                        <i class="fas fa-user-cog fa-icon"></i>
-                        إدارة المستخدمين
+                <div class="nav-item">
+                    <a class="nav-link has-submenu{{ request()->is('users*') ? ' active' : '' }}"
+                        onclick="toggleSubmenu(this)">
+                        <div class="nav-content">
+                            <i class="fas fa-user-cog fa-icon"></i>
+                            إدارة المستخدمين
+                        </div>
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="submenu{{ request()->is('users*') ? ' show' : '' }}">
+                        <a class="nav-link" href="{{ route('users.index') }}">
+                            <div class="nav-content">
+                                <i class="fas fa-list fa-icon"></i>
+                                قائمة المستخدمين
+                            </div>
+                        </a>
+                        <a class="nav-link" href="{{ route('users.create') }}">
+                            <div class="nav-content">
+                                <i class="fas fa-user-plus fa-icon"></i>
+                                إضافة مستخدم جديد
+                            </div>
+                        </a>
+                        <a class="nav-link" href="{{ route('users.pending') }}">
+                            <div class="nav-content">
+                                <i class="fas fa-clock fa-icon"></i>
+                                المستخدمين المعلقين
+                                @php
+                                    $pendingCount = \App\Models\User::where('is_approved', false)->count();
+                                @endphp
+                                @if ($pendingCount > 0)
+                                    <span class="badge bg-warning text-dark">{{ $pendingCount }}</span>
+                                @endif
+                            </div>
+                        </a>
+                        <a class="nav-link" href="{{ route('profile.edit', Auth::id()) }}">
+                            <div class="nav-content">
+                                <i class="fas fa-user-edit fa-icon"></i>
+                                الملف الشخصي
+                            </div>
+                        </a>
                     </div>
-                    <span class="dropdown-arrow">▼</span>
-                </a>
-                <div class="submenu{{ request()->is('users*') ? ' show' : '' }}">
-                    <a class="nav-link" href="{{ route('users.index') }}">
-                        <div class="nav-content">
-                            <i class="fas fa-list fa-icon"></i>
-                            قائمة المستخدمين
-                        </div>
-                    </a>
-                    <a class="nav-link" href="{{ route('users.create') }}">
-                        <div class="nav-content">
-                            <i class="fas fa-user-plus fa-icon"></i>
-                            إضافة مستخدم جديد
-                        </div>
-                    </a>
-                    <a class="nav-link" href="{{ route('users.pending') }}">
-                        <div class="nav-content">
-                            <i class="fas fa-clock fa-icon"></i>
-                            المستخدمين المعلقين
-                            @php
-                            $pendingCount = \App\Models\User::where('is_approved', false)->count();
-                            @endphp
-                            @if ($pendingCount > 0)
-                            <span class="badge bg-warning text-dark">{{ $pendingCount }}</span>
-                            @endif
-                        </div>
-                    </a>
-                    <a class="nav-link" href="{{ route('profile.edit', Auth::id()) }}">
-                        <div class="nav-content">
-                            <i class="fas fa-user-edit fa-icon"></i>
-                            الملف الشخصي
-                        </div>
-                    </a>
                 </div>
-            </div>
 
             @endcan
 
             <!-- Roles & Permissions Section -->
             @if ('manage-roles')
-            <div class="nav-item">
-                <a class="nav-link has-submenu" onclick="toggleSubmenu(this)">
-                    <div class="nav-content">
-                        <i class="fas fa-user-shield fa-icon"></i>
-                        الأدوار والصلاحيات
+                <div class="nav-item">
+                    <a class="nav-link has-submenu" onclick="toggleSubmenu(this)">
+                        <div class="nav-content">
+                            <i class="fas fa-user-shield fa-icon"></i>
+                            الأدوار والصلاحيات
+                        </div>
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="submenu">
+                        <a class="nav-link" href="{{ route('roles.index') }}">
+                            <div class="nav-content">
+                                <i class="fas fa-users-cog fa-icon"></i>
+                                إدارة الأدوار
+                            </div>
+                        </a>
+                        <a class="nav-link" href="{{ route('permissions.index') }}">
+                            <div class="nav-content">
+                                <i class="fas fa-key fa-icon"></i>
+                                إدارة الصلاحيات
+                            </div>
+                        </a>
+                        <a class="nav-link" href="{{ route('users.assign-roles') }}">
+                            <div class="nav-content">
+                                <i class="fas fa-user-tag fa-icon"></i>
+                                تعيين الأدوار للمستخدمين
+                            </div>
+                        </a>
                     </div>
-                    <span class="dropdown-arrow">▼</span>
-                </a>
-                <div class="submenu">
-                    <a class="nav-link" href="{{ route('roles.index') }}">
-                        <div class="nav-content">
-                            <i class="fas fa-users-cog fa-icon"></i>
-                            إدارة الأدوار
-                        </div>
-                    </a>
-                    <a class="nav-link" href="{{ route('permissions.index') }}">
-                        <div class="nav-content">
-                            <i class="fas fa-key fa-icon"></i>
-                            إدارة الصلاحيات
-                        </div>
-                    </a>
-                    <a class="nav-link" href="{{ route('users.assign-roles') }}">
-                        <div class="nav-content">
-                            <i class="fas fa-user-tag fa-icon"></i>
-                            تعيين الأدوار للمستخدمين
-                        </div>
-                    </a>
                 </div>
-            </div>
             @endcan
 
             <!-- SDLC Phases Section -->
             @can('manage-phases')
-            <div class="nav-item">
-                <a class="nav-link has-submenu" onclick="toggleSubmenu(this)">
-                    <div class="nav-content">
-                        <i class="fas fa-layer-group fa-icon"></i>
-                        مراحل SDLC
+                <div class="nav-item">
+                    <a class="nav-link has-submenu" onclick="toggleSubmenu(this)">
+                        <div class="nav-content">
+                            <i class="fas fa-layer-group fa-icon"></i>
+                            مراحل SDLC
+                        </div>
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="submenu">
+                        <a class="nav-link" href="#">
+                            <div class="nav-content">
+                                <i class="fas fa-search fa-icon"></i>
+                                مرحلة التحليل
+                            </div>
+                        </a>
+                        <a class="nav-link" href="#">
+                            <div class="nav-content">
+                                <i class="fas fa-drafting-compass fa-icon"></i>
+                                مرحلة التصميم
+                            </div>
+                        </a>
+                        <a class="nav-link" href="#">
+                            <div class="nav-content">
+                                <i class="fas fa-code fa-icon"></i>
+                                مرحلة التطوير
+                            </div>
+                        </a>
+                        <a class="nav-link" href="#">
+                            <div class="nav-content">
+                                <i class="fas fa-bug fa-icon"></i>
+                                مرحلة الاختبار
+                            </div>
+                        </a>
+                        <a class="nav-link" href="#">
+                            <div class="nav-content">
+                                <i class="fas fa-rocket fa-icon"></i>
+                                مرحلة الإطلاق
+                            </div>
+                        </a>
+                        <a class="nav-link" href="#">
+                            <div class="nav-content">
+                                <i class="fas fa-tools fa-icon"></i>
+                                مرحلة الصيانة
+                            </div>
+                        </a>
                     </div>
-                    <span class="dropdown-arrow">▼</span>
-                </a>
-                <div class="submenu">
-                    <a class="nav-link" href="#">
-                        <div class="nav-content">
-                            <i class="fas fa-search fa-icon"></i>
-                            مرحلة التحليل
-                        </div>
-                    </a>
-                    <a class="nav-link" href="#">
-                        <div class="nav-content">
-                            <i class="fas fa-drafting-compass fa-icon"></i>
-                            مرحلة التصميم
-                        </div>
-                    </a>
-                    <a class="nav-link" href="#">
-                        <div class="nav-content">
-                            <i class="fas fa-code fa-icon"></i>
-                            مرحلة التطوير
-                        </div>
-                    </a>
-                    <a class="nav-link" href="#">
-                        <div class="nav-content">
-                            <i class="fas fa-bug fa-icon"></i>
-                            مرحلة الاختبار
-                        </div>
-                    </a>
-                    <a class="nav-link" href="#">
-                        <div class="nav-content">
-                            <i class="fas fa-rocket fa-icon"></i>
-                            مرحلة الإطلاق
-                        </div>
-                    </a>
-                    <a class="nav-link" href="#">
-                        <div class="nav-content">
-                            <i class="fas fa-tools fa-icon"></i>
-                            مرحلة الصيانة
-                        </div>
-                    </a>
                 </div>
-            </div>
             @endcan
 
             <!-- Clients Section -->
             @can('manage-clients')
-            <div class="nav-item">
-                <a class="nav-link" href="#">
-                    <div class="nav-content">
-                        <i class="fas fa-handshake fa-icon"></i>
-                        {{ __('messages.clients') }}
-                    </div>
-                </a>
-            </div>
+                <div class="nav-item">
+                    <a class="nav-link" href="#">
+                        <div class="nav-content">
+                            <i class="fas fa-handshake fa-icon"></i>
+                            {{ __('messages.clients') }}
+                        </div>
+                    </a>
+                </div>
             @endcan
 
             <!-- Reports Section -->
             @can('view-reports')
-            <div class="nav-item">
-                <a class="nav-link has-submenu" onclick="toggleSubmenu(this)">
-                    <div class="nav-content">
-                        <i class="fas fa-chart-bar fa-icon"></i>
-                        التقارير والإحصائيات
+                <div class="nav-item">
+                    <a class="nav-link has-submenu" onclick="toggleSubmenu(this)">
+                        <div class="nav-content">
+                            <i class="fas fa-chart-bar fa-icon"></i>
+                            التقارير والإحصائيات
+                        </div>
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="submenu">
+                        <a class="nav-link" href="#">
+                            <div class="nav-content">
+                                <i class="fas fa-chart-line fa-icon"></i>
+                                تقارير المشروعات
+                            </div>
+                        </a>
+                        <a class="nav-link" href="#">
+                            <div class="nav-content">
+                                <i class="fas fa-chart-pie fa-icon"></i>
+                                تقارير الفرق
+                            </div>
+                        </a>
+                        <a class="nav-link" href="#">
+                            <div class="nav-content">
+                                <i class="fas fa-clock fa-icon"></i>
+                                تقارير الوقت
+                            </div>
+                        </a>
+                        <a class="nav-link" href="#">
+                            <div class="nav-content">
+                                <i class="fas fa-download fa-icon"></i>
+                                تصدير التقارير
+                            </div>
+                        </a>
                     </div>
-                    <span class="dropdown-arrow">▼</span>
-                </a>
-                <div class="submenu">
-                    <a class="nav-link" href="#">
-                        <div class="nav-content">
-                            <i class="fas fa-chart-line fa-icon"></i>
-                            تقارير المشروعات
-                        </div>
-                    </a>
-                    <a class="nav-link" href="#">
-                        <div class="nav-content">
-                            <i class="fas fa-chart-pie fa-icon"></i>
-                            تقارير الفرق
-                        </div>
-                    </a>
-                    <a class="nav-link" href="#">
-                        <div class="nav-content">
-                            <i class="fas fa-clock fa-icon"></i>
-                            تقارير الوقت
-                        </div>
-                    </a>
-                    <a class="nav-link" href="#">
-                        <div class="nav-content">
-                            <i class="fas fa-download fa-icon"></i>
-                            تصدير التقارير
-                        </div>
-                    </a>
                 </div>
-            </div>
             @endcan
 
             <!-- Settings Section -->
             @can('manage-settings')
-            <div class="nav-item">
-                <a class="nav-link has-submenu" onclick="toggleSubmenu(this)">
-                    <div class="nav-content">
-                        <i class="fas fa-cog fa-icon"></i>
-                        {{ __('messages.settings') }}
+                <div class="nav-item">
+                    <a class="nav-link has-submenu" onclick="toggleSubmenu(this)">
+                        <div class="nav-content">
+                            <i class="fas fa-cog fa-icon"></i>
+                            {{ __('messages.settings') }}
+                        </div>
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="submenu">
                     </div>
-                    <span class="dropdown-arrow">▼</span>
-                </a>
-                <div class="submenu">
                 </div>
-            </div>
             @endcan
-        </div>
     </div>
+</div>
 </nav>
 
 <!-- Enhanced JavaScript for Sidebar -->
